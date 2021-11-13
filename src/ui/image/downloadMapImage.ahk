@@ -12,6 +12,7 @@ downloadMapImage(baseUrl, gameMemoryData, ByRef mapData) {
     try {
         whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
         whr.Open("GET", imageUrl, true)
+        whr.SetTimeouts(0, 60000, 30000, 120000)
         whr.Send()
         whr.WaitForResponse()
         
@@ -23,6 +24,8 @@ downloadMapImage(baseUrl, gameMemoryData, ByRef mapData) {
         mapOffsety := whr.getResponseHeader("offsety")
         mapwidth := whr.getResponseHeader("mapwidth")
         mapheight := whr.getResponseHeader("mapheight")
+        exits := whr.getResponseHeader("exits")
+        waypoint := whr.getResponseHeader("waypoint")
         vStream := whr.ResponseStream
         
         if (ComObjType(vStream) = 0xD) {      ;VT_UNKNOWN = 0xD
@@ -47,5 +50,5 @@ downloadMapImage(baseUrl, gameMemoryData, ByRef mapData) {
         WriteLog("ERROR: Failed to download image from " imageUrl)
     }
     WriteLog("Downloaded " imageUrl " to " sFile)
-    mapData := { "sFile": sFile, "leftTrimmed" : leftTrimmed, "topTrimmed" : topTrimmed, "mapOffsetX" : mapOffsetX, "mapOffsety" : mapOffsety, "mapwidth" : mapwidth, "mapheight" : mapheight }
+    mapData := { "sFile": sFile, "leftTrimmed" : leftTrimmed, "topTrimmed" : topTrimmed, "mapOffsetX" : mapOffsetX, "mapOffsety" : mapOffsety, "mapwidth" : mapwidth, "mapheight" : mapheight, "exits": exits, "waypoint": waypoint }
 }  
