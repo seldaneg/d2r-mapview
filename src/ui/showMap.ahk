@@ -23,6 +23,7 @@ ShowMap(mapGuiWidth, scale, leftMargin, topMargin, opacity, mapData, gameMemoryD
     serverScale := 2 
     Angle := 45
     padding := 150
+    scale := 3.2
 
     
     sFile := mapData["sFile"] ; downloaded map image
@@ -51,25 +52,36 @@ ShowMap(mapGuiWidth, scale, leftMargin, topMargin, opacity, mapData, gameMemoryD
     
     scaledWidth := (RWidth * scale)
     scaleAdjust := 1 ; need to adjust the scale for oversized maps
-    if (scaledWidth > mapGuiWidth) {
-        scaleAdjust := mapGuiWidth / (RWidth * scale)
-        scaledWidth := mapGuiWidth
-        WriteLogDebug("OverSized map, reducing scale to " scale ", maxWidth set to " mapGuiWidth)
-    }
     scaledHeight := (RHeight * 0.5) * scale * scaleAdjust
     rotatedWidth := RWidth * scale * scaleAdjust
     rotatedHeight := RHeight * scale * scaleAdjust
+    leftMargin := (A_ScreenWidth / 2) - (scaledWidth / 2) - 10
+    topMargin  := (A_ScreenHeight / 2) - (scaledHeight / 2) - 160
     
+    xPosDot := ((gameMemoryData["xPos"] - mapData["mapOffsetX"]) * serverScale) + padding
+    yPosDot := ((gameMemoryData["yPos"] - mapData["mapOffsetY"]) * serverScale) + padding
+
     
     hbm := CreateDIBSection(rotatedWidth, rotatedHeight)
     hdc := CreateCompatibleDC()
     obm := SelectObject(hdc, hbm)
-    Gdip_SetSmoothingMode(G, 4)  
+    G := Gdip_GraphicsFromImage(pBitmap)
+    
+    
+
+
+    
+    pPen := Gdip_CreatePen(0xffffFF00, 6)
+    Gdip_DrawRectangle(G, pPen, xPosDot-2, yPosDot-2, 6, 6)
+    ;Gdip_DrawRectangle(G, pPen, 0, 0, Width, Height) ;outline for whole map
+    Gdip_DeletePen(pPen)
+    
+    
     G := Gdip_GraphicsFromHDC(hdc)
     pBitmap := Gdip_RotateBitmap(pBitmap, Angle) ; rotates bitmap for 45 degrees. Disposes of pBitmap.
 
     ;WriteLog("scaledWidth: " scaledWidth " scaledHeight: " scaledHeight)
-    Gdip_DrawImage(G, pBitmap, 0, 0, scaledWidth, scaledHeight, 0, 0, RWidth, RHeight, opacity)
+    Gdip_DrawImage(G, pBitmap, moveMapX, moveMapY, scaledWidth, scaledHeight, 0, 0, RWidth, RHeight, 0.5)
     UpdateLayeredWindow(hwnd1, hdc, leftMargin, topMargin, rotatedWidth, rotatedHeight)
     SelectObject(hdc, obm)
     DeleteObject(hbm)

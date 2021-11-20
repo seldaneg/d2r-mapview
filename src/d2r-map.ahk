@@ -89,10 +89,10 @@ While 1 {
                 }
                 ;Gui, 1: Show, NA
                 ;Gui, 3: Show, NA
-                ShowMap(maxWidth, scale, leftMargin, topMargin, opacity, mapData, gameMemoryData, uiData)
-                checkAutomapVisibility(uiOffset, alwaysShowMap, hideTown, gameMemoryData["levelNo"])
+                ; ShowMap(maxWidth, scale, leftMargin, topMargin, opacity, mapData, gameMemoryData, uiData)
+                ; checkAutomapVisibility(uiOffset, alwaysShowMap, hideTown, gameMemoryData["levelNo"])
             }
-
+            ShowMap(maxWidth, scale, leftMargin, topMargin, opacity, mapData, gameMemoryData, uiData)
             ShowPlayer(maxWidth, scale, leftMargin, topMargin, mapConfig, mapData, gameMemoryData, uiData)
             checkAutomapVisibility(uiOffset, alwaysShowMap, hideTown, gameMemoryData["levelNo"])
 

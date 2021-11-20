@@ -10,12 +10,14 @@ ShowPlayer(mapGuiWidth, scale, leftMargin, topMargin, mapConfig, mapData, gameMe
     Angle := 45
     opacity := 0.9
     padding := 150
+    scale := 3.4
 
     ; get relative position of player in world
     ; xpos is absolute world pos in game
     ; each map has offset x and y which is absolute world position
     xPosDot := ((gameMemoryData["xPos"] - mapData["mapOffsetX"]) * serverScale) + padding
     yPosDot := ((gameMemoryData["yPos"] - mapData["mapOffsetY"]) * serverScale) + padding
+    
     
     ; WriteLog("xPos raw " gameMemoryData["xPos"] " yPos raw " gameMemoryData["yPos"])
     ; WriteLog("xPosDot " xPosDot " yPosDot " yPosDot)
@@ -62,6 +64,9 @@ ShowPlayer(mapGuiWidth, scale, leftMargin, topMargin, mapConfig, mapData, gameMe
     scaledHeight := (RHeight * 0.5) * scale * scaleAdjust
     rotatedWidth := RWidth * scale * scaleAdjust
     rotatedHeight := RHeight * scale * scaleAdjust
+    leftMargin := (A_ScreenWidth / 2) - (scaledWidth / 2) + 20
+    topMargin  := (A_ScreenHeight / 2) - (scaledHeight / 2) - 140
+    
     
     hbm := CreateDIBSection(rotatedWidth, rotatedHeight)
     hdc := CreateCompatibleDC()
